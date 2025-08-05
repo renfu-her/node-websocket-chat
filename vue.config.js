@@ -7,6 +7,8 @@ module.exports={
     sourceMap:true
   },
   devServer:{
+    host: '0.0.0.0',
+    port: 8080,
     proxy: {
       '': {
         target: process.env.PROXY_SERVER,

@@ -1,7 +1,7 @@
 const baseUrl="https://lf3-static.bytednsdoc.com/obj/eden-cn/hbnpe_lm_wpn/ljhwZthlaukjlkulzlp/xigua_pc/emoji/";
 const emoji = [
   {
-    "title": "[捂脸]",
+    "title": "[捂臉]",
     "url": "emoji_10006.png"
   }, {
     "title": "[大笑]",
@@ -10,37 +10,37 @@ const emoji = [
     "title": "[呲牙]",
     "url": "emoji_8.png"
   }, {
-    "title": "[爱慕]",
+    "title": "[愛慕]",
     "url": "emoji_2.png"
   }, {
-    "title": "[流泪]",
+    "title": "[流淚]",
     "url": "emoji_6.png"
   }, {
     "title": "[害羞]",
     "url": "emoji_10.png"
   }, {
-    "title": "[灵光一闪]",
+    "title": "[靈光一閃]",
     "url": "emoji_17.png"
   }, {
-    "title": "[抠鼻]",
+    "title": "[摳鼻]",
     "url": "emoji_5.png"
   }, {
     "title": "[耶]",
     "url": "emoji_10005.png"
   }, {
-    "title": "[可爱]",
+    "title": "[可愛]",
     "url": "emoji_11.png"
   }, {
-    "title": "[打脸]",
+    "title": "[打臉]",
     "url": "emoji_20.png"
   }, {
     "title": "[笑哭]",
     "url": "emoji_10007.png"
   }, {
-    "title": "[我想静静]",
+    "title": "[我想靜靜]",
     "url": "emoji_10010.png"
   }, {
-    "title": "[泪奔]",
+    "title": "[淚奔]",
     "url": "emoji_44.png"
   }, {
     "title": "[挑眉]",
@@ -49,25 +49,25 @@ const emoji = [
     "title": "[裂了]",
     "url": "emoji_20003.png"
   }, {
-    "title": "[难受]",
+    "title": "[難受]",
     "url": "emoji_20004.png"
   }, {
-    "title": "[赞]",
+    "title": "[贊]",
     "url": "emoji_52.png"
   }, {
-    "title": "[祈祷]",
+    "title": "[祈禱]",
     "url": "emoji_54.png"
   }, {
     "title": "[玫瑰]",
     "url": "emoji_58.png"
   }, {
-    "title": "[发怒]",
+    "title": "[發怒]",
     "url": "emoji_7.png"
   }, {
     "title": "[酷拽]",
     "url": "emoji_4.png"
   }, {
-    "title": "[机智]",
+    "title": "[機智]",
     "url": "emoji_10003.png"
   }, {
     "title": "[微笑]",
@@ -76,7 +76,7 @@ const emoji = [
     "title": "[哈欠]",
     "url": "emoji_22.png"
   }, {
-    "title": "[震惊]",
+    "title": "[震驚]",
     "url": "emoji_23.png"
   }, {
     "title": "[送心]",
@@ -88,7 +88,7 @@ const emoji = [
     "title": "[what]",
     "url": "emoji_26.png"
   }, {
-    "title": "[泣不成声]",
+    "title": "[泣不成聲]",
     "url": "emoji_27.png"
   }, {
     "title": "[小鼓掌]",
@@ -106,22 +106,22 @@ const emoji = [
     "title": "[吐血]",
     "url": "emoji_33.png"
   }, {
-    "title": "[可怜]",
+    "title": "[可憐]",
     "url": "emoji_34.png"
   }, {
-    "title": "[嘘]",
+    "title": "[噓]",
     "url": "emoji_35.png"
   }, {
     "title": "[撇嘴]",
     "url": "emoji_36.png"
   }, {
-    "title": "[黑线]",
+    "title": "[黑線]",
     "url": "emoji_37.png"
   }, {
     "title": "[鼾睡]",
     "url": "emoji_9.png"
   }, {
-    "title": "[雾霾]",
+    "title": "[霧霾]",
     "url": "emoji_39.png"
   }, {
     "title": "[奸笑]",
@@ -136,13 +136,13 @@ const emoji = [
     "title": "[抓狂]",
     "url": "emoji_43.png"
   }, {
-    "title": "[惊呆]",
+    "title": "[驚呆]",
     "url": "emoji_3.png"
   }, {
     "title": "[吻]",
     "url": "emoji_46.png"
   }, {
-    "title": "[恐惧]",
+    "title": "[恐懼]",
     "url": "emoji_47.png"
   }, {
     "title": "[笑]",
@@ -157,16 +157,16 @@ const emoji = [
     "title": "[互粉]",
     "url": "emoji_10009.png"
   }, {
-    "title": "[皱眉]",
+    "title": "[皺眉]",
     "url": "emoji_83.png"
   }, {
     "title": "[擦汗]",
     "url": "emoji_84.png"
   }, {
-    "title": "[红脸]",
+    "title": "[紅臉]",
     "url": "emoji_10014.png"
   }, {
-    "title": "[做鬼脸]",
+    "title": "[做鬼臉]",
     "url": "emoji_87.png"
   }, {
     "title": "[尬笑]",
@@ -178,13 +178,13 @@ const emoji = [
     "title": "[吐]",
     "url": "emoji_90.png"
   }, {
-    "title": "[惊喜]",
+    "title": "[驚喜]",
     "url": "emoji_91.png"
   }, {
-    "title": "[摸头]",
+    "title": "[摸頭]",
     "url": "emoji_82.png"
   }, {
-    "title": "[来看我]",
+    "title": "[來看我]",
     "url": "emoji_10004.png"
   }, {
     "title": "[委屈]",
@@ -193,13 +193,13 @@ const emoji = [
     "title": "[舔屏]",
     "url": "emoji_63.png"
   }, {
-    "title": "[鄙视]",
+    "title": "[鄙視]",
     "url": "emoji_64.png"
   }, {
-    "title": "[飞吻]",
+    "title": "[飛吻]",
     "url": "emoji_65.png"
   }, {
-    "title": "[紫薇别走]",
+    "title": "[紫薇別走]",
     "url": "emoji_67.png"
   }, {
     "title": "[吐彩虹]",
@@ -208,37 +208,37 @@ const emoji = [
     "title": "[求抱抱]",
     "url": "emoji_69.png"
   }, {
-    "title": "[周冬雨的凝视]",
+    "title": "[周冬雨的凝視]",
     "url": "emoji_10011.png"
   }, {
-    "title": "[马思纯的微笑]",
+    "title": "[馬思純的微笑]",
     "url": "emoji_71.png"
   }, {
     "title": "[敲打]",
     "url": "emoji_92.png"
   }, {
-    "title": "[再见]",
+    "title": "[再見]",
     "url": "emoji_66.png"
   }, {
-    "title": "[吃瓜群众]",
+    "title": "[吃瓜群眾]",
     "url": "emoji_10001.png"
   }, {
-    "title": "[强]",
+    "title": "[強]",
     "url": "emoji_88.png"
   }, {
     "title": "[如花]",
     "url": "emoji_89.png"
   }, {
-    "title": "[奋斗]",
+    "title": "[奮鬥]",
     "url": "emoji_93.png"
   }, {
     "title": "[衰]",
     "url": "emoji_13.png"
   }, {
-    "title": "[闭嘴]",
+    "title": "[閉嘴]",
     "url": "emoji_14.png"
   }, {
-    "title": "[晕]",
+    "title": "[暈]",
     "url": "emoji_12.png"
   }, {
     "title": "[大哭]",
@@ -262,13 +262,13 @@ const emoji = [
     "title": "[碰拳]",
     "url": "emoji_98.png"
   }, {
-    "title": "[击掌]",
+    "title": "[擊掌]",
     "url": "emoji_100.png"
   }, {
     "title": "[kiss]",
     "url": "emoji_55.png"
   }, {
-    "title": "[有一说一]",
+    "title": "[有一說一]",
     "url": "emoji_20005.png"
   }, {
     "title": "[666]",
@@ -283,7 +283,7 @@ const emoji = [
     "title": "[心]",
     "url": "emoji_107.png"
   }, {
-    "title": "[伤心]",
+    "title": "[傷心]",
     "url": "emoji_10015.png"
   }, {
     "title": "[屎]",
@@ -292,16 +292,16 @@ const emoji = [
     "title": "[吐舌]",
     "url": "emoji_72.png"
   }, {
-    "title": "[呆无辜]",
+    "title": "[呆無辜]",
     "url": "emoji_73.png"
   }, {
     "title": "[看]",
     "url": "emoji_74.png"
   }, {
-    "title": "[柠檬狗]",
+    "title": "[檸檬狗]",
     "url": "emoji_32001.png"
   }, {
-    "title": "[狗头币]",
+    "title": "[狗頭幣]",
     "url": "emoji_32008.png"
   }, {
     "title": "[白眼]",
@@ -313,19 +313,19 @@ const emoji = [
     "title": "[不看]",
     "url": "emoji_113.png"
   }, {
-    "title": "[黑脸]",
+    "title": "[黑臉]",
     "url": "emoji_78.png"
   }, {
-    "title": "[骷髅]",
+    "title": "[骷髏]",
     "url": "emoji_10013.png"
   }, {
-    "title": "[炸弹]",
+    "title": "[炸彈]",
     "url": "emoji_114.png"
   }, {
     "title": "[蛋糕]",
     "url": "emoji_111.png"
   }, {
-    "title": "[礼物]",
+    "title": "[禮物]",
     "url": "emoji_110.png"
   }, {
     "title": "[刀]",
@@ -337,19 +337,19 @@ const emoji = [
     "title": "[辣眼睛]",
     "url": "emoji_32048.png"
   }, {
-    "title": "[啊这]",
+    "title": "[啊這]",
     "url": "emoji_32039.png"
   }, {
     "title": "[打call]",
     "url": "emoji_32044.png"
   }, {
-    "title": "[挺秃然的]",
+    "title": "[挺禿然的]",
     "url": "emoji_32058.png"
   }, {
-    "title": "[暗中观察]",
+    "title": "[暗中觀察]",
     "url": "emoji_32053.png"
   }, {
-    "title": "[挠头]",
+    "title": "[撓頭]",
     "url": "emoji_32059.png"
   }, {
     "title": "[敷面膜]",
@@ -358,46 +358,46 @@ const emoji = [
     "title": "[服了]",
     "url": "emoji_32045.png"
   }, {
-    "title": "[爱心抱抱]",
+    "title": "[愛心抱抱]",
     "url": "emoji_32042.png"
   }, {
     "title": "[笑到模糊]",
     "url": "emoji_32043.png"
   }, {
-    "title": "[变形]",
+    "title": "[變形]",
     "url": "emoji_32080.png"
   }, {
-    "title": "[社会社会]",
+    "title": "[社會社會]",
     "url": "emoji_32050.png"
   }, {
     "title": "[托腮]",
     "url": "emoji_32041.png"
   }, {
-    "title": "[脑阔疼]",
+    "title": "[腦闊疼]",
     "url": "emoji_32047.png"
   }, {
     "title": "[打工人]",
     "url": "emoji_32056.png"
   }, {
-    "title": "[干饭人]",
+    "title": "[乾飯人]",
     "url": "emoji_32055.png"
   }, {
-    "title": "[摸鱼]",
+    "title": "[摸魚]",
     "url": "emoji_32051.png"
   }, {
-    "title": "[无聊]",
+    "title": "[無聊]",
     "url": "emoji_32046.png"
   }, {
     "title": "[瑞思拜]",
     "url": "emoji_32057.png"
   }, {
-    "title": "[打赏]",
+    "title": "[打賞]",
     "url": "emoji_32052.png"
   }, {
-    "title": "[摊手]",
+    "title": "[攤手]",
     "url": "emoji_32040.png"
   }, {
-    "title": "[课代表]",
+    "title": "[課代表]",
     "url": "emoji_32062.png"
   }, {
     "title": "[口吐芬芳]",
@@ -427,25 +427,25 @@ const emoji = [
     "title": "[支持]",
     "url": "emoji_32099.png"
   }, {
-    "title": "[应援]",
+    "title": "[應援]",
     "url": "emoji_32100.png"
   }, {
-    "title": "[沙发]",
+    "title": "[沙發]",
     "url": "emoji_32073.png"
   }, {
-    "title": "[电视]",
+    "title": "[電視]",
     "url": "emoji_32101.png"
   }, {
-    "title": "[太难了]",
+    "title": "[太難了]",
     "url": "emoji_32074.png"
   }, {
     "title": "[完播支持]",
     "url": "emoji_32075.png"
   }, {
-    "title": "[血书催更]",
+    "title": "[血書催更]",
     "url": "emoji_32076.png"
   }, {
-    "title": "[强烈推荐]",
+    "title": "[強烈推薦]",
     "url": "emoji_32098.png"
   }, {
     "title": "[躺平]",
@@ -457,3 +457,5 @@ const emoji = [
     "title": "[2333]",
     "url": "emoji_32079.png"
   }];
+
+export {emoji};

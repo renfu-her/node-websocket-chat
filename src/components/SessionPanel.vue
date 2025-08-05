@@ -18,7 +18,7 @@
     <div class="iChat-session-footer">
       <div class="iChat-message-form" :class="{'focus-form':text!==''||isFocus}">
         <div class="iChat-send-warp">
-          <button class="iChat-send-btn" v-show="text!==''||isFocus" @click="sendText(text)">发送</button>
+          <button class="iChat-send-btn" v-show="text!==''||isFocus" @click="sendText(text)">發送</button>
           <span class="iconfont icon-plus-o" v-show="text===''&&!isFocus" @click.stop="toggleTool"></span>
         </div>
         <div class="iChat-expression-btn" @click.stop="toggleExpression">
@@ -114,16 +114,16 @@
         const reg = /\.(?:png|jpg|jepg)$/i;
         let file=e.target.files[0];
         if(!reg.test(file.name)){
-          AlterMessage.warning("请选择正确格式的图片文件!");
+          AlterMessage.warning("請選擇正確格式的圖片文件!");
           return
         }
         let maxSize=1*1024*1024;
         if(file.size>maxSize){
-          AlterMessage.warning("图片大小不能超过1M!");
+          AlterMessage.warning("圖片大小不能超過1M!");
           return
         }
         let reader = new FileReader();
-        reader.readAsDataURL(file); // 读出 base64
+        reader.readAsDataURL(file); // 讀出 base64
         reader.onloadend =()=> {
           let html=reader.result;
           this.sendMessage(html,'image')

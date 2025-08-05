@@ -31,7 +31,7 @@
         <textarea class="session-textarea" v-model="text" @keypress.enter="sendText(text)"></textarea>
       </div>
       <div class="session-btn-warp">
-        <button class="session-send-btn" @click="sendText(text)">发送</button>
+        <button class="session-send-btn" @click="sendText(text)">發送</button>
       </div>
     </div>
   </div>
@@ -94,16 +94,16 @@
         const reg = /\.(?:png|jpg|jepg)$/i;
         let file=e.target.files[0];
         if(!reg.test(file.name)){
-          Message.warning("请选择正确格式的图片文件!");
+          Message.warning("請選擇正確格式的圖片文件!");
           return
         }
         let maxSize=1*1024*1024;
         if(file.size>maxSize){
-          Message.warning("图片大小不能超过1M!","warning");
+          Message.warning("圖片大小不能超過1M!","warning");
           return
         }
         let reader = new FileReader();
-        reader.readAsDataURL(file); // 读出 base64
+        reader.readAsDataURL(file); // 讀出 base64
         reader.onloadend =()=> {
           let html=reader.result;
           this.sendMessage(html,'image')

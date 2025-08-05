@@ -18,10 +18,10 @@
         <div slot="content">
           <UiEmojiText :text="message.content" v-if="message.type==='text'"></UiEmojiText>
           <div v-if="message.type==='image'">
-            <template v-if="message.content==='【图片】'">
+            <template v-if="message.content==='【圖片】'">
               {{message.content}}
             </template>
-            <img :src="message.content" alt="图片" v-else>
+            <img :src="message.content" alt="圖片" v-else>
           </div>
         </div>
       </div>
@@ -63,7 +63,7 @@
               name:"似水流年",
               avatarUrl:"http://himg.bdimg.com/sys/portrait/item/90193135323338383137313237bc13.jpg"
             },
-            content:"这是一条[微笑]测试信息1112222222[气球]2222222",
+            content:"這是一條[微笑]測試信息1112222222[氣球]2222222",
             time:new Date().getTime(),
             type:"text"
           };

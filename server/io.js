@@ -21,7 +21,7 @@ const util={
     user.type='user';
     if(isReconnect){
       this.loginSuccess(user,socket);
-      console.log(`用户<${user.name}>重新链接成功！`)
+      console.log(`用戶<${user.name}>重新鏈接成功！`)
     }else {
       const flag=await this.isHaveName(user.name);
       if(!flag){
@@ -32,8 +32,8 @@ const util={
         const messages = await store.getMessages();
         socket.emit("history-message","group_001",messages);
       }else {
-        console.log(`登录失败,昵称<${user.name}>已存在!`)
-        socket.emit('loginFail','登录失败,昵称已存在!')
+        console.log(`登錄失敗,暱稱<${user.name}>已存在!`)
+        socket.emit('loginFail','登錄失敗,暱稱已存在!')
       }
     }
   },
