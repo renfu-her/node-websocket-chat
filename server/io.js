@@ -56,7 +56,7 @@ const util={
     socket.user=user;
     socket.emit('loginSuccess', data, users);
   },
-  //根据useragent判读设备类型
+  //根據useragent判讀設備類型
   getDeviceType(userAgent){
     let bIsIpad = userAgent.match(/ipad/i) == "ipad";
     let bIsIphoneOs = userAgent.match(/iphone os/i) == "iphone os";
@@ -72,7 +72,7 @@ const util={
       return "pc";
     }
   },
-  //获取在线用户列表
+  //獲取在線用戶列表
   async getOnlineUsers(){
     const users=[
       {
@@ -90,7 +90,7 @@ const util={
     })
     return users;
   },
-  //判断用户是否已经存在
+  //判斷用戶是否已經存在
   async isHaveName(name){
     const users=await this.getOnlineUsers();
     return users.some(item => item.name===name)
@@ -104,20 +104,20 @@ io.sockets.on('connection',(socket)=>{
   }
   let user=decode?decode.data:{};
   socket.on("disconnect",(reason)=>{
-    //判断是否是已登录用户
+          //判斷是否是已登錄用戶
     if (socket.user&&socket.user.id) {
-      //删除登录用户信息,并通知所有在线用户
+      //刪除登錄用戶信息,並通知所有在線用戶
       socket.broadcast.emit('system', socket.user, 'logout');
       store.saveUser(socket.user,'logout')
     }
     console.log(reason)
   });
-  //判断链接用户是否已经登录
+      //判斷鏈接用戶是否已經登錄
   if(user&&user.id){
-    //已登录的用户重新登录
+    //已登錄的用戶重新登錄
     util.login(user,socket,true);
   }else {
-    //监听用户登录事件
+    //監聽用戶登錄事件
     socket.on('login',(user)=>{
       util.login(user,socket,false)
     });
