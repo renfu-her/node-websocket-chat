@@ -13,11 +13,15 @@
     "serve": "vue-cli-service serve",
     "build": "vue-cli-service build",
     "lint": "vue-cli-service lint",
-    "prod": "node server/index.js"
+    "prod": "node server/index.js",
+    "migrate": "node server/migrate.js",
+    "test-db": "node server/test-db.js",
+    "cleanup": "node server/cleanup.js"
   },
   "dependencies": {
     "core-js": "^3.6.5",
     "nedb": "^1.8.0",
+    "sqlite3": "^5.1.6",
     "socket.io-client": "^4.4.0",
     "vue": "^2.6.11"
   },
