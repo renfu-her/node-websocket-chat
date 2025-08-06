@@ -37,6 +37,47 @@ function initDatabase() {
     }
   });
 
+  // 创建房间表
+  db.run(`CREATE TABLE IF NOT EXISTS rooms (
+    id TEXT PRIMARY KEY,
+    name TEXT NOT NULL,
+    description TEXT,
+    owner_id TEXT NOT NULL,
+    owner_name TEXT NOT NULL,
+    is_open INTEGER DEFAULT 1,
+    max_users INTEGER DEFAULT 50,
+    current_users INTEGER DEFAULT 0,
+    created_at DATETIME DEFAULT CURRENT_TIMESTAMP,
+    updated_at DATETIME DEFAULT CURRENT_TIMESTAMP
+  )`, (err) => {
+    if (err) {
+      console.error('创建房间表失败:', err.message);
+    } else {
+      console.log('房间表创建成功或已存在');
+    }
+  });
+
+  // 创建房间消息表
+  db.run(`CREATE TABLE IF NOT EXISTS room_messages (
+    id INTEGER PRIMARY KEY AUTOINCREMENT,
+    room_id TEXT NOT NULL,
+    from_id TEXT NOT NULL,
+    from_name TEXT NOT NULL,
+    from_avatarUrl TEXT,
+    from_ip TEXT,
+    from_deviceType TEXT,
+    content TEXT NOT NULL,
+    type TEXT DEFAULT 'text',
+    time INTEGER NOT NULL,
+    created_at DATETIME DEFAULT CURRENT_TIMESTAMP
+  )`, (err) => {
+    if (err) {
+      console.error('创建房间消息表失败:', err.message);
+    } else {
+      console.log('房间消息表创建成功或已存在');
+    }
+  });
+
   // 创建消息表
   db.run(`CREATE TABLE IF NOT EXISTS messages (
     id INTEGER PRIMARY KEY AUTOINCREMENT,
@@ -82,6 +123,24 @@ function initDatabase() {
   db.run('CREATE INDEX IF NOT EXISTS idx_users_name ON users(name)', (err) => {
     if (err) {
       console.error('创建用户名索引失败:', err.message);
+    }
+  });
+
+  db.run('CREATE INDEX IF NOT EXISTS idx_room_messages_room_id ON room_messages(room_id)', (err) => {
+    if (err) {
+      console.error('创建房间消息房间索引失败:', err.message);
+    }
+  });
+
+  db.run('CREATE INDEX IF NOT EXISTS idx_room_messages_time ON room_messages(time)', (err) => {
+    if (err) {
+      console.error('创建房间消息时间索引失败:', err.message);
+    }
+  });
+
+  db.run('CREATE INDEX IF NOT EXISTS idx_rooms_owner_id ON rooms(owner_id)', (err) => {
+    if (err) {
+      console.error('创建房间所有者索引失败:', err.message);
     }
   });
 }
@@ -265,6 +324,165 @@ const dbOperations = {
           reject(err);
         } else {
           resolve({ deleted: this.changes });
+        }
+      });
+    });
+  },
+
+  // 创建房间
+  createRoom: (room) => {
+    return new Promise((resolve, reject) => {
+      const sql = `INSERT INTO rooms 
+        (id, name, description, owner_id, owner_name, max_users) 
+        VALUES (?, ?, ?, ?, ?, ?)`;
+      
+      db.run(sql, [
+        room.id,
+        room.name,
+        room.description,
+        room.owner_id,
+        room.owner_name,
+        room.max_users || 50
+      ], function(err) {
+        if (err) {
+          reject(err);
+        } else {
+          resolve({ id: room.id, ...room });
+        }
+      });
+    });
+  },
+
+  // 获取所有房间
+  getRooms: () => {
+    return new Promise((resolve, reject) => {
+      const sql = `SELECT * FROM rooms ORDER BY created_at DESC`;
+      
+      db.all(sql, [], (err, rows) => {
+        if (err) {
+          reject(err);
+        } else {
+          resolve(rows);
+        }
+      });
+    });
+  },
+
+  // 根据ID获取房间
+  getRoomById: (roomId) => {
+    return new Promise((resolve, reject) => {
+      const sql = `SELECT * FROM rooms WHERE id = ?`;
+      
+      db.get(sql, [roomId], (err, row) => {
+        if (err) {
+          reject(err);
+        } else {
+          resolve(row);
+        }
+      });
+    });
+  },
+
+  // 更新房间状态
+  updateRoomStatus: (roomId, isOpen) => {
+    return new Promise((resolve, reject) => {
+      const sql = `UPDATE rooms SET is_open = ?, updated_at = CURRENT_TIMESTAMP WHERE id = ?`;
+      
+      db.run(sql, [isOpen ? 1 : 0, roomId], function(err) {
+        if (err) {
+          reject(err);
+        } else {
+          resolve({ updated: this.changes });
+        }
+      });
+    });
+  },
+
+  // 更新房间用户数量
+  updateRoomUserCount: (roomId, count) => {
+    return new Promise((resolve, reject) => {
+      const sql = `UPDATE rooms SET current_users = ?, updated_at = CURRENT_TIMESTAMP WHERE id = ?`;
+      
+      db.run(sql, [count, roomId], function(err) {
+        if (err) {
+          reject(err);
+        } else {
+          resolve({ updated: this.changes });
+        }
+      });
+    });
+  },
+
+  // 删除房间
+  deleteRoom: (roomId) => {
+    return new Promise((resolve, reject) => {
+      const sql = `DELETE FROM rooms WHERE id = ?`;
+      
+      db.run(sql, [roomId], function(err) {
+        if (err) {
+          reject(err);
+        } else {
+          resolve({ deleted: this.changes });
+        }
+      });
+    });
+  },
+
+  // 插入房间消息
+  insertRoomMessage: (message) => {
+    return new Promise((resolve, reject) => {
+      const sql = `INSERT INTO room_messages 
+        (room_id, from_id, from_name, from_avatarUrl, from_ip, from_deviceType, content, type, time) 
+        VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)`;
+      
+      db.run(sql, [
+        message.room_id,
+        message.from.id,
+        message.from.name,
+        message.from.avatarUrl,
+        message.from.ip,
+        message.from.deviceType,
+        message.content,
+        message.type,
+        message.time
+      ], function(err) {
+        if (err) {
+          reject(err);
+        } else {
+          resolve({ id: this.lastID, ...message });
+        }
+      });
+    });
+  },
+
+  // 获取房间消息
+  getRoomMessages: (roomId, limit = 100) => {
+    return new Promise((resolve, reject) => {
+      const sql = `SELECT * FROM room_messages WHERE room_id = ? ORDER BY time ASC LIMIT ?`;
+      
+      db.all(sql, [roomId, limit], (err, rows) => {
+        if (err) {
+          reject(err);
+        } else {
+          // 转换数据格式以兼容现有代码
+          const messages = rows.map(row => ({
+            from: {
+              id: row.from_id,
+              name: row.from_name,
+              avatarUrl: row.from_avatarUrl,
+              ip: row.from_ip,
+              deviceType: row.from_deviceType
+            },
+            to: {
+              id: row.room_id,
+              name: 'room',
+              type: 'room'
+            },
+            content: row.content,
+            type: row.type,
+            time: row.time
+          }));
+          resolve(messages);
         }
       });
     });

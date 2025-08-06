@@ -2,286 +2,61 @@
   <div class="chat-app-warp">
     <UserLogin v-if="!loginUser.id && !showRegister" @login="userLogin" @switch-to-register="showRegister = true" :type="deviceType" v-drag></UserLogin>
     <UserRegister v-if="!loginUser.id && showRegister" @register-success="userLogin" @switch-to-login="showRegister = false" :type="deviceType" v-drag></UserRegister>
-    <div class="app-main-panel ui-clear" v-drag v-if="loginUser.id&&deviceType==='pc'">
-      <div class="app-aside-panel">
-        <div class="app-user-avatar">
-          <img :src="loginUser.avatarUrl" @mousedown.stop alt="" :title="loginUser.email || loginUser.name">
-        </div>
-        <ul class="aside-menu-list" @mousedown.stop>
-          <li v-for="(item,i) in menus"
-              :key="i"
-              @click="curMenu=item.name"
-              :class="{active:curMenu===item.name}">
-            <span :class="item.icon" :title="item.title"></span>
-          </li>
-        </ul>
-      </div>
-      <div class="app-container">
-        <div class="app-container-panel ui-clear" v-show="curMenu==='chat'">
-          <div class="app-user-panel">
-            <div class="app-user-form">
-              <span class="iconfont icon-search app-form-icon"></span>
-              <input type="text" v-model="keyword" placeholder="搜索" class="app-form-element">
-            </div>
-            <div class="app-users-warp scroll">
-              <div @mousedown.stop>
-                <UserItem class="app-user-item"
-                          v-for="(item,i) in searchUser(keyword)"
-                          :class="{active:item.id===curSession.id}"
-                          :user="item"
-                          :num="unReadNum(item.id)"
-                          :message="finallyMessage(item.id)"
-                          @click.native="changeSession(item)"
-                          :key="i">
-                  <template slot="time" v-if="finallyMessage(item.id).time">
-                    {{finallyMessage(item.id).time | friendlyTime}}
-                  </template>
-                </UserItem>
-              </div>
-            </div>
-          </div>
-          <div class="app-session-panel">
-            <UiSessionPanel :session="curSession"
-                            @sendMessage="sendMessage"
-                            v-if="curSession.id">
-              <template slot="info">
-                <span v-if="curSession.type==='group'" class="app-user-num">
-                  ({{users.length}})
-                </span>
-                <span v-if="curSession.type==='user'" class="app-use-extInfo">
-                  <i class="iconfont" :class="curSession.deviceType==='pc'?'icon-pc':'icon-phone'"></i>
-                  <span>({{curSession.ip}})</span>
-                </span>
-              </template>
-              <div class="message-list-warp scroll" slot="body" ref="message-list">
-                <UiChatBubble class="message-item"
-                              :key="i"
-                              :message="item"
-                              :setting="setting"
-                              :is-send="loginUser.id===item.from.id"
-                              v-for="(item,i) in getMessages(curSession.id)">
-                </UiChatBubble>
-              </div>
-            </UiSessionPanel>
-            <div class="app-no-session" v-else>
-              <span class="iconfont icon-wechat"></span>
-            </div>
-          </div>
-        </div>
-        <div class="app-container-panel" v-show="curMenu==='setting'">
-          <div class="app-card-panel">
-            <div class="app-card-title">设置</div>
-            <div class="app-user-card  ui-clear" @mousedown.stop>
-              <div class="app-card-avatar">
-                <img :src="loginUser.avatarUrl" alt="">
-              </div>
-              <div class="app-card-container">
-                <div class="app-card-infoRow">{{loginUser.email || loginUser.name}}</div>
-                <div class="app-card-infoRow">
-                  <i class="iconfont" :class="loginUser.deviceType==='pc'?'icon-pc':'icon-phone'"></i>
-                  <span class="app-login-ip">{{loginUser.ip}}</span>
-                </div>
-                <div class="app-card-infoRow">
-                  <span class="app-login-time">{{loginUser.time | formatTime}}</span>
-                </div>
-              </div>
-            </div>
-            <ul class="ui-list app-setting" @mousedown.stop>
-              <li>
-                <span class="ui-label">消息声音</span>
-                <UiSwitch class="ui-right" v-model="setting.isVoice"></UiSwitch>
-              </li>
-              <li>
-                <span class="ui-label">显示昵称</span>
-                <UiSwitch class="ui-right" v-model="setting.isName"></UiSwitch>
-              </li>
-              <li>
-                <span class="ui-label">消息时间</span>
-                <UiSwitch class="ui-right" v-model="setting.isTime"></UiSwitch>
-              </li>
-            </ul>
-          </div>
-        </div>
-        <div class="app-container-panel" v-show="curMenu==='about'">
-          <div class="app-card-panel">
-            <div class="app-card-title">关于</div>
-            <ul class="ui-list app-setting" @mousedown.stop>
-              <li>
-                <span class="ui-label">版本：</span>
-                <span class="ui-text">{{about.version}}</span>
-              </li>
-              <li>
-                <span class="ui-label">协议：</span>
-                <span class="ui-text">{{about.license}}</span>
-              </li>
-              <li>
-                <span class="ui-label">作者：</span>
-                <span class="ui-text">{{about.author}}</span>
-              </li>
-              <li>
-                <span class="ui-label">邮箱：</span>
-                <span class="ui-text">{{about.email}}</span>
-              </li>
-              <li>
-                <span class="ui-label">仓库：</span>
-                <a class="ui-link" :href="about.github" target="_blank">GitHub</a>
-              </li>
-              <li>
-                <a class="ui-link" :href="about.github" target="_blank">
-                  <img src="https://img.shields.io/github/stars/cleverqin/node-websocket-Chatroom?label=Star&style=flat&logo=github" alt="">
-                </a>
-                <a class="ui-link" :href="about.github" target="_blank">
-                  <img src="https://img.shields.io/github/forks/cleverqin/node-websocket-Chatroom?label=Fork&style=flat&logo=github" alt="">
-                </a>
-              </li>
-            </ul>
-          </div>
-        </div>
-      </div>
-      <span class="iconfont icon-09" v-if="socket&&!isConnect" title="断线重连"></span>
-    </div>
-    <div class="app-main-touch" v-if="loginUser.id&&deviceType==='phone'">
-      <div class="app-iChat-container">
-        <div class="app-iChat-panel"  v-show="curMenu==='chat'">
-          <div class="iChat-search-warp">
-            <div class="iChat-user-avatar">
-              <img :src="loginUser.avatarUrl" alt="">
-            </div>
-            <div class="iChat-element">
-              <span class="iconfont icon-search"></span>
-              <input type="text" v-model="keyword" class="iChat-search-input" placeholder="搜索">
-            </div>
-          </div>
-          <div class="iChat-users-warp">
-            <UserItem class="iChat-user-item"
-                      v-for="(item,i) in searchUser(keyword)"
-                      :class="{active:item.id===curSession.id}"
-                      :user="item"
-                      :num="unReadNum(item.id)"
-                      :message="finallyMessage(item.id)"
-                      @click.native="changeSession(item)"
-                      :key="i">
-              <template slot="time" v-if="finallyMessage(item.id).time">
-                {{finallyMessage(item.id).time | friendlyTime}}
-              </template>
-            </UserItem>
-          </div>
-        </div>
-        <div class="app-iChat-panel" v-show="curMenu==='setting'">
-          <div class="iChat-setting-cover">
-            <img :src="loginUser.avatarUrl" alt="">
-          </div>
-          <ul class="ui-list app-setting" @mousedown.stop>
-            <li>
-              <span class="ui-label">用户名</span>
-              <span class="ui-right">{{loginUser.email || loginUser.name}}</span>
-            </li>
-            <li>
-              <span class="ui-label">登录时间</span>
-              <span class="ui-right">{{loginUser.time | formatTime}}</span>
-            </li>
-            <li>
-              <span class="ui-label">IP</span>
-              <span class="ui-right">{{loginUser.ip}}</span>
-            </li>
-            <li>
-              <span class="ui-label">设备</span>
-              <span class="ui-right">
-                <i class="iconfont" :class="loginUser.deviceType==='pc'?'icon-pc':'icon-phone'"></i>
-              </span>
-            </li>
-            <li>
-              <span class="ui-label">消息声音</span>
-              <UiSwitch class="ui-right" v-model="setting.isVoice"></UiSwitch>
-            </li>
-            <li>
-              <span class="ui-label">显示昵称</span>
-              <UiSwitch class="ui-right" v-model="setting.isName"></UiSwitch>
-            </li>
-            <li>
-              <span class="ui-label">消息时间</span>
-              <UiSwitch class="ui-right" v-model="setting.isTime"></UiSwitch>
-            </li>
-          </ul>
-        </div>
-        <div class="app-iChat-panel" v-show="curMenu==='about'">
-          <div class="app-card-title">关于</div>
-          <ul class="ui-list app-setting">
-            <li>
-              <span class="ui-label">版本：</span>
-              <span class="ui-text">{{about.version}}</span>
-            </li>
-            <li>
-              <span class="ui-label">协议：</span>
-              <span class="ui-text">{{about.license}}</span>
-            </li>
-            <li>
-              <span class="ui-label">作者：</span>
-              <span class="ui-text">{{about.author}}</span>
-            </li>
-            <li>
-              <span class="ui-label">邮箱：</span>
-              <span class="ui-text">{{about.email}}</span>
-            </li>
-            <li>
-              <span class="ui-label">仓库：</span>
-              <a class="ui-link" :href="about.github" target="_blank">GitHub</a>
-            </li>
-            <li>
-              <a class="ui-link" :href="about.github" target="_blank">
-                <img src="https://img.shields.io/github/stars/cleverqin/node-websocket-Chatroom?label=Star&style=flat&logo=github" alt="">
-              </a>
-              <a class="ui-link" :href="about.github" target="_blank">
-                <img src="https://img.shields.io/github/forks/cleverqin/node-websocket-Chatroom?label=Fork&style=flat&logo=github" alt="">
-              </a>
-            </li>
-          </ul>
-        </div>
-      </div>
-      <div class="app-iChat-footer">
-        <ul class="app-iChat-menus ui-clear">
-          <li class="iChat-menu-item"
-              v-for="(item,i) in menus"
-              @click="curMenu=item.name"
-              :class="{active:curMenu===item.name}"
-              :key="i">
-            <div class="iChat-menu-icon">
-              <span :class="item.icon"></span>
-            </div>
-            <div class="iChat-menu-name">{{item.title}}</div>
-          </li>
-        </ul>
-      </div>
-      <SessionPanel @back="changeSession({})"  @sendMessage="sendMessage" :session="curSession" v-show="curSession.id">
-          <template slot="num">
-            ({{users.length}})
-          </template>
-          <div class="iChat-message-warp" ref="message-list">
-            <div class="iChat-message-list">
-              <UiChatBubble class="message-item"
-                            :key="i"
-                            :message="item"
-                            :setting="setting"
-                            :is-send="loginUser.id===item.from.id"
-                            v-for="(item,i) in getMessages(curSession.id)">
-              </UiChatBubble>
-            </div>
-          </div>
-        </SessionPanel>
-      <span class="iconfont icon-09" v-if="socket&&!isConnect" title="断线重连"></span>
-    </div>
+    
+    <!-- Room Lobby -->
+    <RoomLobby 
+      v-if="loginUser.id && !currentRoom && deviceType==='pc'" 
+      :loginUser="loginUser" 
+      :socket="socket"
+      @join-room="joinRoom"
+      @room-created="onRoomCreated"
+      @room-closed="onRoomClosed"
+      v-drag
+    ></RoomLobby>
+    
+    <!-- Mobile Room Lobby -->
+    <RoomLobby 
+      v-if="loginUser.id && !currentRoom && deviceType==='phone'" 
+      :loginUser="loginUser" 
+      :socket="socket"
+      @join-room="joinRoom"
+      @room-created="onRoomCreated"
+      @room-closed="onRoomClosed"
+    ></RoomLobby>
+    
+    <!-- Room Chat -->
+    <RoomChat 
+      v-if="loginUser.id && currentRoom && deviceType==='pc'" 
+      :loginUser="loginUser" 
+      :socket="socket"
+      :currentRoom="currentRoom"
+      @leave-room="leaveRoom"
+      @room-closed="onRoomClosed"
+      @room-updated="onRoomUpdated"
+    ></RoomChat>
+    
+    <!-- Mobile Room Chat -->
+    <RoomChat 
+      v-if="loginUser.id && currentRoom && deviceType==='phone'" 
+      :loginUser="loginUser" 
+      :socket="socket"
+      :currentRoom="currentRoom"
+      @leave-room="leaveRoom"
+      @room-closed="onRoomClosed"
+      @room-updated="onRoomUpdated"
+    ></RoomChat>
+    
+
+
     <audio :src="audioSrc" ref="audio"></audio>
   </div>
 </template>
 
 <script>
-  import UserItem from "./UserItem";
-  import UiSessionPanel from "./UiSessionPanel";
-  import UiChatBubble from "./UiChatBubble";
-  import UiSwitch from "./UiSwitch";
   import UserLogin from "./UserLogin";
   import UserRegister from "./UserRegister";
-  import SessionPanel from "./SessionPanel";
+  import RoomLobby from "./RoomLobby";
+  import RoomChat from "./RoomChat";
   import {getDeviceType} from "./emoji";
   import Message from "./Message";
   import { Manager } from 'socket.io-client';
@@ -290,13 +65,10 @@
   export default {
     name: "chat-app",
     components:{
-      UserItem,
-      UiSessionPanel,
-      UiChatBubble,
-      UiSwitch,
       UserLogin,
       UserRegister,
-      SessionPanel
+      RoomLobby,
+      RoomChat
     },
     filters:{
       friendlyTime,
@@ -378,7 +150,8 @@
         socketURL:window._HOST||'',
         socket:null,
         isConnect:false,
-        showRegister:false
+        showRegister:false,
+        currentRoom:null
       }
     },
     mounted(){
@@ -531,6 +304,9 @@
         _this.loginUser=data.user;
         _this.token=data.token;
         _this.users=users;
+        // Reset room state on login
+        _this.currentRoom = null;
+        _this.curSession = {};
       },
       loginFail(message){
         Message.error(message);
@@ -584,6 +360,32 @@
             }
             break;
           }
+        }
+      },
+
+      // Room-related methods
+      joinRoom(room) {
+        this.currentRoom = room;
+      },
+
+      leaveRoom() {
+        this.currentRoom = null;
+        this.curSession = {};
+      },
+
+      onRoomCreated(room) {
+        // Optionally join the room immediately after creation
+        this.currentRoom = room;
+      },
+
+      onRoomClosed() {
+        this.currentRoom = null;
+        this.curSession = {};
+      },
+
+      onRoomUpdated(updatedRoom) {
+        if (this.currentRoom && this.currentRoom.id === updatedRoom.id) {
+          this.currentRoom = updatedRoom;
         }
       },
     },

@@ -16,6 +16,7 @@
     "prod": "node server/index.js",
     "migrate": "node server/migrate.js",
     "migrate-v2": "node server/migrate-v2.js",
+    "migrate-v3": "node server/migrate-v3.js",
     "test-db": "node server/test-db.js",
     "cleanup": "node server/cleanup.js"
   },

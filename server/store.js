@@ -220,5 +220,63 @@ module.exports = {
         }
       });
     });
+  },
+
+  // 创建房间
+  createRoom(roomData) {
+    return db.createRoom(roomData);
+  },
+
+  // 获取所有房间
+  getRooms() {
+    return db.getRooms();
+  },
+
+  // 根据ID获取房间
+  getRoomById(roomId) {
+    return db.getRoomById(roomId);
+  },
+
+  // 更新房间状态
+  updateRoomStatus(roomId, isOpen) {
+    return db.updateRoomStatus(roomId, isOpen);
+  },
+
+  // 更新房间用户数量
+  updateRoomUserCount(roomId, count) {
+    return db.updateRoomUserCount(roomId, count);
+  },
+
+  // 删除房间
+  deleteRoom(roomId) {
+    return db.deleteRoom(roomId);
+  },
+
+  // 保存房间消息
+  async saveRoomMessage(from, roomId, message, type) {
+    if (type === 'image') {
+      const base64Data = message.replace(/^data:image\/\w+;base64,/, "");
+      const dataBuffer = new Buffer.from(base64Data, 'base64');
+      const filename = util.MD5(base64Data);
+      fs.writeFileSync(`./upload/${filename}.png`, dataBuffer);
+      message = `/assets/images/${filename}.png`;
+    }
+    
+    console.log("\033[36m" + from.name + "\033[0m在房间<\033[36m" + roomId + "\033[0m>:\033[32m" + message + "\033[0m");
+    
+    const messageData = {
+      room_id: roomId,
+      from,
+      content: message,
+      type,
+      time: new Date().getTime()
+    };
+    
+    return db.insertRoomMessage(messageData);
+  },
+
+  // 获取房间消息
+  getRoomMessages(roomId, limit = 100) {
+    return db.getRoomMessages(roomId, limit);
   }
 };
