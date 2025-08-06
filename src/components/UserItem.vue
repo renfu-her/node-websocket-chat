@@ -5,7 +5,7 @@
     </div>
     <div class="user-info-warp">
       <div class="user-name-warp">
-        <div class="user-name-text">{{user.name}}</div>
+        <div class="user-name-text">{{user.email || user.name}}</div>
         <div class="message-time">
           <slot name="time"></slot>
         </div>

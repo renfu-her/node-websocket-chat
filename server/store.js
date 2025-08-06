@@ -49,6 +49,58 @@ module.exports = {
     return db.findUserByName(name);
   },
 
+  // 根据邮箱查找用户
+  findUserByEmail(email) {
+    return db.findUserByEmail(email);
+  },
+
+  // 验证用户登录
+  async validateUser(email, password) {
+    const user = await db.validateUser(email, password);
+    if (!user) {
+      return null;
+    }
+    
+    const bcrypt = require('bcryptjs');
+    const isValid = await bcrypt.compare(password, user.password);
+    return isValid ? user : null;
+  },
+
+  // 注册新用户
+  async registerUser(userData) {
+    const bcrypt = require('bcryptjs');
+    
+    // 检查邮箱是否已存在
+    const existingUser = await db.findUserByEmail(userData.email);
+    if (existingUser) {
+      throw new Error('邮箱已被注册');
+    }
+
+    // 检查用户名是否已存在
+    const existingName = await db.findUserByName(userData.name);
+    if (existingName) {
+      throw new Error('用户名已被使用');
+    }
+
+    // 加密密码
+    const hashedPassword = await bcrypt.hash(userData.password, 10);
+    
+    const user = {
+      id: userData.id,
+      name: userData.name,
+      email: userData.email,
+      password: hashedPassword,
+      avatarUrl: userData.avatarUrl,
+      ip: userData.ip,
+      deviceType: userData.deviceType,
+      roomId: userData.roomId,
+      type: userData.type || 'user',
+      time: userData.time
+    };
+
+    return db.insertUser(user);
+  },
+
   // 删除用户
   deleteUser(id) {
     return db.deleteUser(id);

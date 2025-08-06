@@ -1,10 +1,11 @@
 <template>
   <div class="chat-app-warp">
-    <UserLogin v-if="!loginUser.id" @login="userLogin" :type="deviceType" v-drag></UserLogin>
+    <UserLogin v-if="!loginUser.id && !showRegister" @login="userLogin" @switch-to-register="showRegister = true" :type="deviceType" v-drag></UserLogin>
+    <UserRegister v-if="!loginUser.id && showRegister" @register-success="userLogin" @switch-to-login="showRegister = false" :type="deviceType" v-drag></UserRegister>
     <div class="app-main-panel ui-clear" v-drag v-if="loginUser.id&&deviceType==='pc'">
       <div class="app-aside-panel">
         <div class="app-user-avatar">
-          <img :src="loginUser.avatarUrl" @mousedown.stop alt="" :title="loginUser.name">
+          <img :src="loginUser.avatarUrl" @mousedown.stop alt="" :title="loginUser.email || loginUser.name">
         </div>
         <ul class="aside-menu-list" @mousedown.stop>
           <li v-for="(item,i) in menus"
@@ -75,7 +76,7 @@
                 <img :src="loginUser.avatarUrl" alt="">
               </div>
               <div class="app-card-container">
-                <div class="app-card-infoRow">{{loginUser.name}}</div>
+                <div class="app-card-infoRow">{{loginUser.email || loginUser.name}}</div>
                 <div class="app-card-infoRow">
                   <i class="iconfont" :class="loginUser.deviceType==='pc'?'icon-pc':'icon-phone'"></i>
                   <span class="app-login-ip">{{loginUser.ip}}</span>
@@ -173,7 +174,7 @@
           <ul class="ui-list app-setting" @mousedown.stop>
             <li>
               <span class="ui-label">用户名</span>
-              <span class="ui-right">{{loginUser.name}}</span>
+              <span class="ui-right">{{loginUser.email || loginUser.name}}</span>
             </li>
             <li>
               <span class="ui-label">登录时间</span>
@@ -279,6 +280,7 @@
   import UiChatBubble from "./UiChatBubble";
   import UiSwitch from "./UiSwitch";
   import UserLogin from "./UserLogin";
+  import UserRegister from "./UserRegister";
   import SessionPanel from "./SessionPanel";
   import {getDeviceType} from "./emoji";
   import Message from "./Message";
@@ -293,6 +295,7 @@
       UiChatBubble,
       UiSwitch,
       UserLogin,
+      UserRegister,
       SessionPanel
     },
     filters:{
@@ -374,7 +377,8 @@
         audioSrc:BELL_URL,
         socketURL:window._HOST||'',
         socket:null,
-        isConnect:false
+        isConnect:false,
+        showRegister:false
       }
     },
     mounted(){
@@ -458,7 +462,7 @@
         if(session.name){
           document.title='与'+session.name+"聊天中|"+this.appTitle
         }else {
-          document.title=this.loginUser.name+"|"+this.appTitle
+          document.title=this.loginUser.email || this.loginUser.name+"|"+this.appTitle
         }
       },
       userLogin(user){

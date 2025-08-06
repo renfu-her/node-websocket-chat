@@ -11,7 +11,7 @@
     <div class="chat-bubble-container">
       <div class="chat-bubble-infoWarp" v-if="setting.isName">
         <span class="chat-bubble-time" v-if="setting.isTime&&isSend" slot="time">{{message.time | friendlyTime}}</span>
-        <span class="chat-bubble-name">{{message.from.name}}</span>
+        <span class="chat-bubble-name">{{message.from.email || message.from.name}}</span>
         <span class="chat-bubble-time" v-if="setting.isTime&&!isSend" slot="time">{{message.time | friendlyTime}}</span>
       </div>
       <div class="chat-bubble-content">

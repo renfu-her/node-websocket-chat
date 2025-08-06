@@ -19,22 +19,67 @@ const util={
     user.deviceType=deviceType;
     user.roomId=socket.id;
     user.type='user';
+    
     if(isReconnect){
       this.loginSuccess(user,socket);
       console.log(`用戶<${user.name}>重新鏈接成功！`)
     }else {
-      const flag=await this.isHaveName(user.name);
-      if(!flag){
-        user.id=socket.id;
-        user.time=new Date().getTime();
-        this.loginSuccess(user,socket);
-        store.saveUser(user,'login')
-        const messages = await store.getMessages();
-        socket.emit("history-message","group_001",messages);
-      }else {
-        console.log(`登錄失敗,暱稱<${user.name}>已存在!`)
-        socket.emit('loginFail','登錄失敗,暱稱已存在!')
+      try {
+        // 验证用户登录
+        const validatedUser = await store.validateUser(user.email, user.password);
+        if(validatedUser){
+          // 检查用户是否已在线
+          const isOnline = await this.isUserOnline(validatedUser.id);
+          if(!isOnline){
+            validatedUser.id = socket.id;
+            validatedUser.time = new Date().getTime();
+            validatedUser.ip = ip;
+            validatedUser.deviceType = deviceType;
+            validatedUser.roomId = socket.id;
+            this.loginSuccess(validatedUser,socket);
+            store.saveUser(validatedUser,'login')
+            const messages = await store.getMessages();
+            socket.emit("history-message","group_001",messages);
+          }else {
+            console.log(`登錄失敗,用戶<${validatedUser.name}>已在線!`)
+            socket.emit('loginFail','登錄失敗,用戶已在線!')
+          }
+        }else {
+          console.log(`登錄失敗,郵箱或密碼錯誤!`)
+          socket.emit('loginFail','登錄失敗,郵箱或密碼錯誤!')
+        }
+      } catch (error) {
+        console.log(`登錄失敗: ${error.message}`)
+        socket.emit('loginFail',`登錄失敗: ${error.message}`)
       }
+    }
+  },
+
+  async register(user,socket) {
+    let ip=socket.handshake.address.replace(/::ffff:/,"");
+    const headers = socket.handshake.headers;
+    const realIP = headers['x-forwarded-for'];
+    ip=realIP?realIP:ip;
+    const deviceType=this.getDeviceType(socket.handshake.headers["user-agent"].toLowerCase());
+    
+    try {
+      user.id = socket.id;
+      user.time = new Date().getTime();
+      user.ip = ip;
+      user.deviceType = deviceType;
+      user.roomId = socket.id;
+      user.type = 'user';
+      
+      // 注册新用户
+      const newUser = await store.registerUser(user);
+      this.loginSuccess(newUser,socket);
+      store.saveUser(newUser,'login')
+      const messages = await store.getMessages();
+      socket.emit("history-message","group_001",messages);
+      console.log(`新用戶<${newUser.name}>註冊成功！`)
+    } catch (error) {
+      console.log(`註冊失敗: ${error.message}`)
+      socket.emit('registerFail',`註冊失敗: ${error.message}`)
     }
   },
   async loginSuccess(user, socket) {
@@ -95,6 +140,12 @@ const util={
     const users=await this.getOnlineUsers();
     return users.some(item => item.name===name)
   },
+
+  // 检查用户是否在线
+  async isUserOnline(userId){
+    const users=await this.getOnlineUsers();
+    return users.some(item => item.id===userId)
+  },
 };
 io.sockets.on('connection',(socket)=>{
   const token=socket.handshake.headers.token;
@@ -120,6 +171,11 @@ io.sockets.on('connection',(socket)=>{
     //監聽用戶登錄事件
     socket.on('login',(user)=>{
       util.login(user,socket,false)
+    });
+    
+    //監聽用戶註冊事件
+    socket.on('register',(user)=>{
+      util.register(user,socket)
     });
   }
 });

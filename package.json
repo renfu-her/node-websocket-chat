@@ -15,10 +15,12 @@
     "lint": "vue-cli-service lint",
     "prod": "node server/index.js",
     "migrate": "node server/migrate.js",
+    "migrate-v2": "node server/migrate-v2.js",
     "test-db": "node server/test-db.js",
     "cleanup": "node server/cleanup.js"
   },
   "dependencies": {
+    "bcryptjs": "^2.4.3",
     "core-js": "^3.6.5",
     "nedb": "^1.8.0",
     "sqlite3": "^5.1.6",

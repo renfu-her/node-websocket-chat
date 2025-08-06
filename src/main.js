@@ -1,6 +1,10 @@
 import Vue from 'vue'
 import App from './App.vue'
 import './assets/css/common.less';
+import Message from './components/Message';
+
+// 将 Message 添加到 Vue 原型上
+Vue.prototype.$message = Message;
 Vue.directive('drag', {
   bind(el) {
     let setPos={
