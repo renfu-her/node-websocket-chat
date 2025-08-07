@@ -46,7 +46,7 @@
             :class="{ 'own-message': message.from.id === loginUser.id }"
           >
             <div class="message-avatar">
-              <img v-if="message.from.avatarUrl" :src="message.from.avatarUrl" alt="avatar">
+              <img v-if="message.from.image" :src="message.from.image" alt="avatar">
               <i v-else class="fas fa-user-circle avatar-placeholder"></i>
             </div>
             <div class="message-content">
@@ -92,7 +92,7 @@
               class="user-item"
               :class="{ 'current-user': user.id === loginUser.id }"
             >
-              <img v-if="user.avatarUrl" :src="user.avatarUrl" alt="avatar" class="user-avatar">
+              <img v-if="user.image" :src="user.image" alt="avatar" class="user-avatar">
               <i v-else class="fas fa-user-circle user-avatar-placeholder"></i>
               <div class="user-info">
                 <span class="user-name">{{ user.email || user.name }}</span>

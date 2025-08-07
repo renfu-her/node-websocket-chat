@@ -6,7 +6,7 @@
        }"
   >
     <div class="chat-bubble-avatar">
-      <img v-if="message.from.avatarUrl" :src="message.from.avatarUrl" alt="">
+      <img v-if="message.from.image" :src="message.from.image" alt="">
       <i v-else class="fas fa-user-circle chat-bubble-avatar-placeholder"></i>
     </div>
     <div class="chat-bubble-container">
@@ -62,7 +62,7 @@
           return {
             from:{
               name:"似水流年",
-              avatarUrl:"http://himg.bdimg.com/sys/portrait/item/90193135323338383137313237bc13.jpg"
+              image:"http://himg.bdimg.com/sys/portrait/item/90193135323338383137313237bc13.jpg"
             },
             content:"這是一條[微笑]測試信息1112222222[氣球]2222222",
             time:new Date().getTime(),

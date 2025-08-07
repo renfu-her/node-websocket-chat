@@ -55,10 +55,12 @@ app.post('/api/upload-avatar', upload.single('avatar'), (req, res) => {
       return res.status(400).json({ error: 'No file uploaded' });
     }
     
-    const avatarUrl = `/static/img/user/${req.file.filename}`;
+    // 使用正確的圖片路徑格式
+    const imageUrl = `/static/img/user/${req.file.filename}`;
     res.json({ 
       success: true, 
-      avatarUrl: avatarUrl,
+      avatarUrl: imageUrl,
+      image: imageUrl, // 同時設置 image 欄位
       message: 'Avatar uploaded successfully' 
     });
   } catch (error) {
@@ -77,13 +79,19 @@ app.put('/api/update-profile', async (req, res) => {
     }
     
     // 這裡應該驗證 token 並獲取用戶 ID
-    // 暫時使用請求中的資料進行更新
-    const bcrypt = require('bcryptjs');
+    // 暫時從請求體中獲取用戶 ID（實際應該從 token 解析）
+    const userId = req.body.userId;
     
-    // 構建更新資料
+    if (!userId) {
+      return res.status(401).json({ error: 'User ID required' });
+    }
+    
+    const bcrypt = require('bcryptjs');
+    const db = require('./db');
+    
+    // 構建更新資料 - email 不應該被更新
     const updateData = {
       name: name,
-      email: email,
       image: image || ''
     };
     
@@ -92,21 +100,26 @@ app.put('/api/update-profile', async (req, res) => {
       updateData.password = await bcrypt.hash(password, 10);
     }
     
-    // 這裡應該實際更新資料庫
-    // 暫時返回模擬資料
-    const updatedUser = { 
-      id: 'user_id', 
-      name: updateData.name, 
-      email: updateData.email, 
-      image: updateData.image,
-      avatarUrl: updateData.image // 保持向後兼容
-    };
-    
-    res.json({ 
-      success: true, 
-      user: updatedUser,
-      message: 'Profile updated successfully' 
-    });
+    // 實際更新資料庫
+    try {
+      await db.updateUser(userId, updateData);
+      
+      // 獲取更新後的用戶資料
+      const updatedUser = await db.findUserById(userId);
+      
+      if (!updatedUser) {
+        return res.status(404).json({ error: 'User not found' });
+      }
+      
+      res.json({ 
+        success: true, 
+        user: updatedUser,
+        message: 'Profile updated successfully' 
+      });
+    } catch (dbError) {
+      console.error('Database update error:', dbError);
+      res.status(500).json({ error: 'Database update failed' });
+    }
   } catch (error) {
     console.error('Profile update error:', error);
     res.status(500).json({ error: 'Profile update failed' });

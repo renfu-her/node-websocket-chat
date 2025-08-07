@@ -1,7 +1,7 @@
 <template>
   <div class="session-panel-warp">
     <div class="session-panel-header">
-      <img v-if="session.avatarUrl" :src="session.avatarUrl" @mousedown.stop="" alt="" class="session-avatar">
+      <img v-if="session.image" :src="session.image" @mousedown.stop="" alt="" class="session-avatar">
       <i v-else class="fas fa-user-circle session-avatar-placeholder"></i>
       <span class="session-name">{{session.name}}</span>
       <slot name="info"></slot>
@@ -50,7 +50,7 @@
         default(){
           return {
             name:"似水流年",
-            avatarUrl: "http://himg.bdimg.com/sys/portrait/item/90193135323338383137313237bc13.jpg"
+            image: "http://himg.bdimg.com/sys/portrait/item/90193135323338383137313237bc13.jpg"
           }
         }
       }

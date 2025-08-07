@@ -12,8 +12,8 @@
         <div class="avatar-section">
           <div class="avatar-container">
             <img 
-              v-if="user.avatarUrl && user.avatarUrl !== ''" 
-              :src="user.avatarUrl" 
+              v-if="user.image && user.image !== ''" 
+              :src="user.image" 
               alt="Avatar" 
               class="user-avatar"
             />
@@ -30,7 +30,7 @@
             <button class="change-avatar-btn" @click="selectFile">
               <i class="fas fa-camera"></i> 更換頭像
             </button>
-            <button v-if="user.avatarUrl" class="remove-avatar-btn" @click="removeAvatar">
+            <button v-if="user.image" class="remove-avatar-btn" @click="removeAvatar">
               <i class="fas fa-trash"></i> 移除頭像
             </button>
           </div>
@@ -56,7 +56,9 @@
               v-model="user.email" 
               placeholder="輸入電子郵件"
               class="form-input"
+              disabled
             />
+            <small class="form-help">電子郵件不可變更</small>
           </div>
 
           <div class="form-group">
@@ -155,7 +157,7 @@ export default {
         
         if (response.ok) {
           const result = await response.json();
-          this.user.avatarUrl = result.avatarUrl;
+          this.user.image = result.image; // 設置 image 欄位
           // Emit event to update parent component
           this.$emit('profile-updated', this.user);
         } else {
@@ -168,7 +170,7 @@ export default {
     },
     
     removeAvatar() {
-      this.user.avatarUrl = '';
+      this.user.image = '';
     },
     
     async saveProfile() {
@@ -177,10 +179,7 @@ export default {
         return;
       }
       
-      if (!this.user.email || this.user.email.trim() === '') {
-        alert('請輸入電子郵件');
-        return;
-      }
+
       
       // 驗證密碼
       if (this.user.password && this.user.password.trim() !== '') {
@@ -199,9 +198,10 @@ export default {
       
       try {
         const updateData = {
+          userId: this.user.id,
           name: this.user.name,
-          email: this.user.email,
-          image: this.user.avatarUrl || ''
+          email: this.user.email, // 傳送 email 但不更新
+          image: this.user.image || ''
         };
         
         // 只有在填寫密碼時才包含密碼
@@ -384,6 +384,19 @@ export default {
 .form-input:focus {
   outline: none;
   border-color: #007bff;
+}
+
+.form-input:disabled {
+  background-color: #f8f9fa;
+  color: #6c757d;
+  cursor: not-allowed;
+}
+
+.form-help {
+  display: block;
+  margin-top: 5px;
+  font-size: 12px;
+  color: #6c757d;
 }
 
 .form-actions {

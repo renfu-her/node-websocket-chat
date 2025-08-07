@@ -1,7 +1,7 @@
 <template>
   <div class="user-item-warp">
     <div class="user-avatar-warp">
-      <img v-if="user.avatarUrl" :src="user.avatarUrl" alt="" class="avatar-img">
+      <img v-if="user.image" :src="user.image" alt="" class="avatar-img">
       <i v-else class="fas fa-user-circle avatar-placeholder"></i>
     </div>
     <div class="user-info-warp">
@@ -35,7 +35,7 @@
         default(){
           return {
             name:"似水水流年水流年水流年流年",
-            avatarUrl:"http://p4.music.126.net/BUFZLieG5a6E3ZVpkHP6fA==/109951163402069754.jpg"
+            image:"http://p4.music.126.net/BUFZLieG5a6E3ZVpkHP6fA==/109951163402069754.jpg"
           }
         }
       },

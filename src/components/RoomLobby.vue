@@ -3,7 +3,7 @@
     <div class="lobby-header">
       <h2>房間大廳</h2>
       <div class="user-info">
-        <img v-if="loginUser.avatarUrl" :src="loginUser.avatarUrl" alt="avatar" class="user-avatar">
+        <img v-if="loginUser.image" :src="loginUser.image" alt="avatar" class="user-avatar">
         <i v-else class="fas fa-user-circle user-avatar-placeholder"></i>
         <span class="user-name">{{ loginUser.email || loginUser.name }}</span>
         <button class="profile-btn" @click="goToProfile">

@@ -3,7 +3,7 @@
     <div class="iChat-session-header">
       <span class="iconfont icon-left" @click="back"></span>
       <div class="session-info-warp">
-        <img v-if="session.avatarUrl" :src="session.avatarUrl" alt="" class="session-avatar">
+        <img v-if="session.image" :src="session.image" alt="" class="session-avatar">
         <i v-else class="fas fa-user-circle session-avatar-placeholder"></i>
         <span class="session-info-name">{{session.name}}</span>
         <span class="user-num" v-if="session.type==='group'">
@@ -63,7 +63,7 @@
           return {
             id:"a000000",
             name:"聊天室",
-            avatarUrl:"static/img/avatar/group-icon.png",
+            image:"static/img/avatar/group-icon.png",
             type: "user",
             deviceType:"pc",
             ip:"10.24.222.110"
