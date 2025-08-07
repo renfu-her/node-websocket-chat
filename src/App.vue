@@ -1,16 +1,12 @@
 <template>
   <div class="app-warp">
-    <ChatApp></ChatApp>
+    <router-view></router-view>
   </div>
 </template>
 
 <script>
-import ChatApp from "./components/ChatApp";
 export default {
-  name: 'App',
-  components: {
-    ChatApp
-  }
+  name: 'App'
 }
 </script>
 

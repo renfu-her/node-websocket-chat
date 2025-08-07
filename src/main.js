@@ -1,7 +1,11 @@
 import Vue from 'vue'
 import App from './App.vue'
+import router from './router'
 import './assets/css/common.less';
 import Message from './components/Message';
+
+// 引入 FontAwesome
+import '@fortawesome/fontawesome-free/css/all.css';
 
 // 将 Message 添加到 Vue 原型上
 Vue.prototype.$message = Message;
@@ -54,5 +58,6 @@ Vue.directive('drag', {
 });
 Vue.config.productionTip = false;
 new Vue({
+  router,
   render: h => h(App),
 }).$mount('#app')

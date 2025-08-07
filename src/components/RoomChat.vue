@@ -13,6 +13,10 @@
         </div>
       </div>
       <div class="room-actions">
+        <button class="logout-btn" @click="logout">
+          <i class="fas fa-sign-out-alt"></i>
+          登出
+        </button>
         <button class="leave-room-btn" @click="leaveRoom">
           <i class="iconfont icon-exit"></i>
           離開房間
@@ -38,7 +42,8 @@
             :class="{ 'own-message': message.from.id === loginUser.id }"
           >
             <div class="message-avatar">
-              <img :src="message.from.avatarUrl" alt="avatar">
+              <img v-if="message.from.avatarUrl" :src="message.from.avatarUrl" alt="avatar">
+              <i v-else class="fas fa-user-circle avatar-placeholder"></i>
             </div>
             <div class="message-content">
               <div class="message-header">
@@ -83,7 +88,8 @@
               class="user-item"
               :class="{ 'current-user': user.id === loginUser.id }"
             >
-              <img :src="user.avatarUrl" alt="avatar" class="user-avatar">
+              <img v-if="user.avatarUrl" :src="user.avatarUrl" alt="avatar" class="user-avatar">
+              <i v-else class="fas fa-user-circle user-avatar-placeholder"></i>
               <div class="user-info">
                 <span class="user-name">{{ user.email || user.name }}</span>
                 <span class="user-device" v-if="user.deviceType">
@@ -239,6 +245,12 @@ export default {
       }
     },
 
+    logout() {
+      if (confirm('確定要登出嗎？')) {
+        this.$emit('logout');
+      }
+    },
+
     addUserToRoom(user) {
       const existingUser = this.roomUsers.find(u => u.id === user.id);
       if (!existingUser) {
@@ -339,6 +351,7 @@ export default {
   gap: 10px;
 }
 
+.logout-btn,
 .leave-room-btn,
 .close-room-btn {
   padding: 8px 16px;
@@ -350,6 +363,15 @@ export default {
   align-items: center;
   gap: 5px;
   transition: all 0.3s;
+}
+
+.logout-btn {
+  background: #f44336;
+  color: white;
+}
+
+.logout-btn:hover {
+  background: #d32f2f;
 }
 
 .leave-room-btn {
@@ -411,6 +433,11 @@ export default {
   width: 100%;
   height: 100%;
   object-fit: cover;
+}
+
+.message-avatar .avatar-placeholder {
+  font-size: 24px; /* Adjust as needed */
+  color: #999; /* Placeholder color */
 }
 
 .message-content {
@@ -559,6 +586,16 @@ export default {
   height: 32px;
   border-radius: 50%;
   object-fit: cover;
+}
+
+.user-avatar-placeholder {
+  width: 32px;
+  height: 32px;
+  font-size: 32px;
+  color: #999;
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
 
 .user-info {

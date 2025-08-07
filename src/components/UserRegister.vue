@@ -2,9 +2,6 @@
   <div class="user-register-warp" v-drag>
     <div class="register-panel">
       <div class="register-header">
-        <div class="register-avatar">
-          <img :src="user.avatarUrl" alt="">
-        </div>
         <div class="register-title">用户注册</div>
       </div>
       <div class="register-form">
@@ -71,35 +68,13 @@ export default {
       user: {
         name: '',
         email: '',
-        password: '',
-        avatarUrl: this.getRandomAvatar()
+        password: ''
       },
       confirmPassword: '',
       loading: false
     }
   },
   methods: {
-    getRandomAvatar() {
-      const avatars = [
-        'static/img/avatar/20180414165754.jpg',
-        'static/img/avatar/20180414165815.jpg',
-        'static/img/avatar/20180414165821.jpg',
-        'static/img/avatar/20180414165827.jpg',
-        'static/img/avatar/20180414165834.jpg',
-        'static/img/avatar/20180414165846.jpg',
-        'static/img/avatar/20180414165855.jpg',
-        'static/img/avatar/20180414165909.jpg',
-        'static/img/avatar/20180414165914.jpg',
-        'static/img/avatar/20180414165920.jpg',
-        'static/img/avatar/20180414165927.jpg',
-        'static/img/avatar/20180414165936.jpg',
-        'static/img/avatar/20180414165942.jpg',
-        'static/img/avatar/20180414165947.jpg',
-        'static/img/avatar/20180414165955.jpg',
-        'static/img/avatar/20180414170003.jpg'
-      ];
-      return avatars[Math.floor(Math.random() * avatars.length)];
-    },
     validateForm() {
       if (!this.user.name.trim()) {
         this.$message.error('请输入用户名');
@@ -183,31 +158,18 @@ export default {
 }
 
 .register-panel {
-  background: white;
+  background: rgba(255, 255, 255, 0.95);
   border-radius: 10px;
   padding: 30px;
   width: 400px;
   max-width: 90vw;
   box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+  backdrop-filter: blur(10px);
 }
 
 .register-header {
   text-align: center;
   margin-bottom: 30px;
-}
-
-.register-avatar {
-  width: 80px;
-  height: 80px;
-  margin: 0 auto 15px;
-  border-radius: 50%;
-  overflow: hidden;
-  
-  img {
-    width: 100%;
-    height: 100%;
-    object-fit: cover;
-  }
 }
 
 .register-title {

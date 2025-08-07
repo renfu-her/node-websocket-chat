@@ -1,7 +1,8 @@
 <template>
   <div class="session-panel-warp">
     <div class="session-panel-header">
-      <img :src="session.avatarUrl" @mousedown.stop="" alt="" class="session-avatar">
+      <img v-if="session.avatarUrl" :src="session.avatarUrl" @mousedown.stop="" alt="" class="session-avatar">
+      <i v-else class="fas fa-user-circle session-avatar-placeholder"></i>
       <span class="session-name">{{session.name}}</span>
       <slot name="info"></slot>
     </div>
@@ -138,6 +139,10 @@
     width: 30px;
     height: 30px;
     vertical-align: middle;
+  }
+  .session-avatar-placeholder{
+    font-size: 30px;
+    color: #606266;
   }
   .session-name{
     font-size: 14px;

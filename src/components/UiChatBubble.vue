@@ -6,7 +6,8 @@
        }"
   >
     <div class="chat-bubble-avatar">
-      <img :src="message.from.avatarUrl" alt="">
+      <img v-if="message.from.avatarUrl" :src="message.from.avatarUrl" alt="">
+      <i v-else class="fas fa-user-circle chat-bubble-avatar-placeholder"></i>
     </div>
     <div class="chat-bubble-container">
       <div class="chat-bubble-infoWarp" v-if="setting.isName">
@@ -88,6 +89,16 @@
     width: 40px;
     height: 40px;
     border-radius: 4px;
+  }
+
+  .chat-bubble-avatar-placeholder {
+    display: block;
+    width: 40px;
+    height: 40px;
+    font-size: 40px;
+    color: #999;
+    text-align: center;
+    line-height: 40px;
   }
   .chat-bubble-send .chat-bubble-avatar{
     float: right;

@@ -3,7 +3,8 @@
     <div class="iChat-session-header">
       <span class="iconfont icon-left" @click="back"></span>
       <div class="session-info-warp">
-        <img :src="session.avatarUrl" alt="" class="session-avatar">
+        <img v-if="session.avatarUrl" :src="session.avatarUrl" alt="" class="session-avatar">
+        <i v-else class="fas fa-user-circle session-avatar-placeholder"></i>
         <span class="session-info-name">{{session.name}}</span>
         <span class="user-num" v-if="session.type==='group'">
           <slot name="num"></slot>
@@ -187,6 +188,11 @@
     border: none;
     margin: 0;
     line-height: 30px;
+  }
+  .session-avatar-placeholder{
+    font-size: 24px;
+    line-height: 30px;
+    vertical-align: middle;
   }
   .session-info-name{
     font-size: 14px;

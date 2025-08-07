@@ -1,7 +1,8 @@
 <template>
   <div class="user-item-warp">
     <div class="user-avatar-warp">
-      <img :src="user.avatarUrl" alt="" class="avatar-img">
+      <img v-if="user.avatarUrl" :src="user.avatarUrl" alt="" class="avatar-img">
+      <i v-else class="fas fa-user-circle avatar-placeholder"></i>
     </div>
     <div class="user-info-warp">
       <div class="user-name-warp">
@@ -79,6 +80,16 @@
     width: 100%;
     height: 100%;
     border-radius: 4px;
+  }
+
+  .user-avatar-warp .avatar-placeholder {
+    display: block;
+    width: 100%;
+    height: 100%;
+    font-size: 40px;
+    color: #999;
+    text-align: center;
+    line-height: 40px;
   }
   .user-info-warp{
     margin-left: 45px;

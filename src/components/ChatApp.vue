@@ -11,6 +11,7 @@
       @join-room="joinRoom"
       @room-created="onRoomCreated"
       @room-closed="onRoomClosed"
+      @logout="logout"
       v-drag
     ></RoomLobby>
     
@@ -22,6 +23,7 @@
       @join-room="joinRoom"
       @room-created="onRoomCreated"
       @room-closed="onRoomClosed"
+      @logout="logout"
     ></RoomLobby>
     
     <!-- Room Chat -->
@@ -33,6 +35,7 @@
       @leave-room="leaveRoom"
       @room-closed="onRoomClosed"
       @room-updated="onRoomUpdated"
+      @logout="logout"
     ></RoomChat>
     
     <!-- Mobile Room Chat -->
@@ -44,6 +47,7 @@
       @leave-room="leaveRoom"
       @room-closed="onRoomClosed"
       @room-updated="onRoomUpdated"
+      @logout="logout"
     ></RoomChat>
     
 
@@ -388,6 +392,19 @@
           this.currentRoom = updatedRoom;
         }
       },
+
+      logout() {
+        this.loginUser = {};
+        this.token = "";
+        this.currentRoom = null;
+        this.curSession = {};
+        this.users = [];
+        if (this.socket) {
+          this.socket.disconnect();
+          this.socket = null;
+        }
+        Message.success("已登出");
+      }
     },
     beforeDestroy(){
       if(this.socket){

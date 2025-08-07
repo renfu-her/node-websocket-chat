@@ -3,8 +3,13 @@
     <div class="lobby-header">
       <h2>房間大廳</h2>
       <div class="user-info">
-        <img :src="loginUser.avatarUrl" alt="avatar" class="user-avatar">
+        <img v-if="loginUser.avatarUrl" :src="loginUser.avatarUrl" alt="avatar" class="user-avatar">
+        <i v-else class="fas fa-user-circle user-avatar-placeholder"></i>
         <span class="user-name">{{ loginUser.email || loginUser.name }}</span>
+        <button class="logout-btn" @click="logout">
+          <i class="fas fa-sign-out-alt"></i>
+          登出
+        </button>
       </div>
     </div>
 
@@ -212,6 +217,10 @@ export default {
       if (confirm('確定要關閉這個房間嗎？房間內的所有用戶將被踢出。')) {
         this.socket.emit('close-room', roomId);
       }
+    },
+
+    logout() {
+      this.$emit('logout');
     }
   }
 };
@@ -222,9 +231,10 @@ export default {
   max-width: 800px;
   margin: 0 auto;
   padding: 20px;
-  background: #fff;
+  background: rgba(255, 255, 255, 0.9);
   border-radius: 8px;
   box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+  backdrop-filter: blur(10px);
 }
 
 .lobby-header {
@@ -255,9 +265,30 @@ export default {
   object-fit: cover;
 }
 
+.user-avatar-placeholder {
+  font-size: 24px;
+  color: #888;
+}
+
 .user-name {
   font-weight: 500;
   color: #666;
+}
+
+.logout-btn {
+  background: none;
+  border: none;
+  color: #f44336;
+  font-size: 16px;
+  cursor: pointer;
+  padding: 0;
+  display: flex;
+  align-items: center;
+  gap: 5px;
+}
+
+.logout-btn:hover {
+  color: #d32f2f;
 }
 
 .lobby-content {
