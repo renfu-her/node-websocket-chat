@@ -151,8 +151,8 @@ const dbOperations = {
   insertUser: (user) => {
     return new Promise((resolve, reject) => {
       const sql = `INSERT OR REPLACE INTO users 
-        (id, name, email, password, avatarUrl, ip, deviceType, roomId, type, time) 
-        VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`;
+        (id, name, email, password, avatarUrl, image, ip, deviceType, roomId, type, time) 
+        VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`;
       
       db.run(sql, [
         user.id,
@@ -160,6 +160,7 @@ const dbOperations = {
         user.email,
         user.password,
         user.avatarUrl,
+        user.image || user.avatarUrl, // 使用 avatarUrl 作為 image 的預設值
         user.ip,
         user.deviceType,
         user.roomId,
@@ -308,6 +309,52 @@ const dbOperations = {
           reject(err);
         } else {
           resolve({ deleted: this.changes });
+        }
+      });
+    });
+  },
+
+  // 更新用户资料
+  updateUser: (id, updateData) => {
+    return new Promise((resolve, reject) => {
+      const fields = [];
+      const values = [];
+      
+      // 構建動態 SQL
+      if (updateData.name !== undefined) {
+        fields.push('name = ?');
+        values.push(updateData.name);
+      }
+      if (updateData.email !== undefined) {
+        fields.push('email = ?');
+        values.push(updateData.email);
+      }
+      if (updateData.password !== undefined) {
+        fields.push('password = ?');
+        values.push(updateData.password);
+      }
+      if (updateData.image !== undefined) {
+        fields.push('image = ?');
+        values.push(updateData.image);
+      }
+      if (updateData.avatarUrl !== undefined) {
+        fields.push('avatarUrl = ?');
+        values.push(updateData.avatarUrl);
+      }
+      
+      if (fields.length === 0) {
+        reject(new Error('No fields to update'));
+        return;
+      }
+      
+      values.push(id);
+      const sql = `UPDATE users SET ${fields.join(', ')} WHERE id = ?`;
+      
+      db.run(sql, values, function(err) {
+        if (err) {
+          reject(err);
+        } else {
+          resolve({ updated: this.changes });
         }
       });
     });

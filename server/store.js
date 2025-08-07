@@ -91,6 +91,7 @@ module.exports = {
       email: userData.email,
       password: hashedPassword,
       avatarUrl: userData.avatarUrl,
+      image: userData.image || userData.avatarUrl, // 使用 avatarUrl 作為 image 的預設值
       ip: userData.ip,
       deviceType: userData.deviceType,
       roomId: userData.roomId,

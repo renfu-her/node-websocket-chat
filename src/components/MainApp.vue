@@ -65,6 +65,13 @@
       @logout="logout"
     ></RoomChat>
 
+    <!-- Profile Component -->
+    <UserProfile 
+      v-if="showProfile" 
+      :loginUser="loginUser"
+      @profile-updated="onProfileUpdated"
+    ></UserProfile>
+
     <audio :src="audioSrc" ref="audio"></audio>
   </div>
 </template>
@@ -74,6 +81,7 @@ import UserLogin from "./UserLogin";
 import UserRegister from "./UserRegister";
 import RoomLobby from "./RoomLobby";
 import RoomChat from "./RoomChat";
+import UserProfile from "./UserProfile";
 import {getDeviceType} from "./emoji";
 import Message from "./Message";
 import { Manager } from 'socket.io-client';
@@ -86,7 +94,8 @@ export default {
     UserLogin,
     UserRegister,
     RoomLobby,
-    RoomChat
+    RoomChat,
+    UserProfile
   },
   filters:{
     friendlyTime,
@@ -110,6 +119,9 @@ export default {
     },
     showRoom() {
       return this.isLoggedIn && this.currentRoom && this.currentRoute === 'Room';
+    },
+    showProfile() {
+      return this.isLoggedIn && this.currentRoute === 'Profile';
     },
     finallyMessage(){
       return (sessionId) => {
@@ -509,6 +521,16 @@ export default {
       }
       Message.success("已登出");
       this.$router.push('/login');
+    },
+
+    onProfileUpdated(updatedUser) {
+      this.loginUser = updatedUser;
+      // Update local storage
+      localStorage.setItem('user', JSON.stringify(updatedUser));
+      // Emit socket event to notify other users about profile update
+      if (this.socket) {
+        this.socket.emit('profile-updated', updatedUser);
+      }
     }
   },
   beforeDestroy(){

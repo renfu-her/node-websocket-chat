@@ -13,6 +13,10 @@
         </div>
       </div>
       <div class="room-actions">
+        <button class="profile-btn" @click="goToProfile">
+          <i class="fas fa-user-edit"></i>
+          個人資料
+        </button>
         <button class="logout-btn" @click="logout">
           <i class="fas fa-sign-out-alt"></i>
           登出
@@ -251,6 +255,10 @@ export default {
       }
     },
 
+    goToProfile() {
+      this.$router.push('/profile');
+    },
+
     addUserToRoom(user) {
       const existingUser = this.roomUsers.find(u => u.id === user.id);
       if (!existingUser) {
@@ -349,6 +357,15 @@ export default {
 .room-actions {
   display: flex;
   gap: 10px;
+}
+
+.profile-btn {
+  background: #2196F3;
+  color: white;
+}
+
+.profile-btn:hover {
+  background: #1976D2;
 }
 
 .logout-btn,

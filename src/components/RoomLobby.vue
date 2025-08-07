@@ -6,6 +6,10 @@
         <img v-if="loginUser.avatarUrl" :src="loginUser.avatarUrl" alt="avatar" class="user-avatar">
         <i v-else class="fas fa-user-circle user-avatar-placeholder"></i>
         <span class="user-name">{{ loginUser.email || loginUser.name }}</span>
+        <button class="profile-btn" @click="goToProfile">
+          <i class="fas fa-user-edit"></i>
+          個人資料
+        </button>
         <button class="logout-btn" @click="logout">
           <i class="fas fa-sign-out-alt"></i>
           登出
@@ -221,6 +225,10 @@ export default {
 
     logout() {
       this.$emit('logout');
+    },
+
+    goToProfile() {
+      this.$router.push('/profile');
     }
   }
 };
@@ -273,6 +281,22 @@ export default {
 .user-name {
   font-weight: 500;
   color: #666;
+}
+
+.profile-btn {
+  background: none;
+  border: none;
+  color: #2196F3;
+  font-size: 16px;
+  cursor: pointer;
+  padding: 0;
+  display: flex;
+  align-items: center;
+  gap: 5px;
+}
+
+.profile-btn:hover {
+  color: #1976D2;
 }
 
 .logout-btn {
